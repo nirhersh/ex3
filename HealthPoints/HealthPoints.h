@@ -3,6 +3,8 @@
 #define EX3_HealthPoints_H
 
 #include <stdbool.h>
+#include <iostream>
+
 
 
 class HealthPoints {
@@ -62,22 +64,19 @@ private:
     *
     * + operator
     */
-    friend HealthPoints operator+(const int number, const HealthPoints& hp);
-    friend HealthPoints operator+(const HealthPoints& hp, const int number);
+    friend HealthPoints& operator+(int number, HealthPoints& hp);
+    friend HealthPoints& operator+(HealthPoints& hp, int number);
 
      /*
     * - (minus) operator
     */
-    friend HealthPoints operator-(const int number, const HealthPoints& hp);
-    friend HealthPoints operator-(const HealthPoints& hp, const int number);
+    friend HealthPoints& operator-(int number, HealthPoints& hp);
+    friend HealthPoints& operator-(HealthPoints& hp, int number);
     
     /*
     * print operator
     */
-    friend std::ostream& operator<<(std::ostream& os, HealthPoints& hp)
-    {
-        os << hp.m_currentHP << "(" << hp.m_maxHP << ")";
-    }
+    friend std::ostream& operator<<(std::ostream& os, HealthPoints& hp);
 };
 
 
