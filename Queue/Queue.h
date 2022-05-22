@@ -80,7 +80,7 @@ public:
     class EmptyQueue{};
 
 private:
-    Node currentNode;
+    Node* firstNode;
     int size;
     static const int EXPAND_RATE = 2;
     static const int INITIAL_SIZE = 10;
