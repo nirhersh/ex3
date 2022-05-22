@@ -1,6 +1,8 @@
 #ifndef EX3_Queue_H
 #define EX3_Queue_H
 
+#include "Node.h"
+
 template <class T>
 class Queue{
 public:
@@ -78,10 +80,8 @@ public:
     class EmptyQueue{};
 
 private:
-    T* data; // or should we make a linked list??
+    Node currentNode;
     int size;
-    int maxSize;
-    void expandArray();
     static const int EXPAND_RATE = 2;
     static const int INITIAL_SIZE = 10;
 };
