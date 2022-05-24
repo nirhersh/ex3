@@ -22,4 +22,5 @@ int main()
     queue1.popFront();
     cout << queue1.front() << endl;
 
+
 }
