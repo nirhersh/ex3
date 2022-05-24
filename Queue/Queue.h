@@ -168,16 +168,15 @@ Queue<T>::Queue() : m_firstNode(nullptr), m_size(EMPTY)
 template <class T>
 Queue<T>::~Queue(){
     int size = m_size;
-    for(int i=0; i < 2; i++){
+    for(int i=0; i < size; i++){
          this->popFront();
     }
 }
 
 template <class T>
-Queue<T>::Queue(const Queue<T>& other) : m_firstNode(nullptr), m_size(other.m_size){
+Queue<T>::Queue(const Queue<T>& other) : m_firstNode(nullptr), m_size(EMPTY){
     for(const T& elem : other){
         this->pushBack(elem);
-        
     }
 }
 
@@ -187,13 +186,13 @@ Queue<T>& Queue<T>::operator=(const Queue<T>& other){
     {
         return *this;
     }
-    for(int i=0; i<m_size; i++){
-        *this.popFront();
+    int size = m_size;
+    for(int i=0; i<size; i++){
+        this->popFront();
     }
     for(const T& elem : other){
-        *this.pushBack(elem);
+        this->pushBack(elem);
     }
-    m_size = other.m_size;
     return *this;
     
 }
@@ -299,7 +298,6 @@ T& Queue<T>::Iterator::operator*() const{
     Node* tempNode = m_queue->m_firstNode; 
     for(int i=0; i<m_index; i++){
         tempNode = tempNode->m_next;
-        assert(tempNode == nullptr);
     }
     return tempNode->m_data;
 }
