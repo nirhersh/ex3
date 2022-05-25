@@ -1,6 +1,8 @@
 #ifndef EX3_Queue_H
 #define EX3_Queue_H
 
+#include <iostream>
+
 template <class T>
 class Queue{
 public:
@@ -100,7 +102,7 @@ Queue<T> filter(const Queue<T> queue, const Condition c)
     Queue<T> result;
     for (const T& elem : queue)
     {
-        if (Condition(elem))
+        if (c(elem))
         {
             result.pushBack(elem);
         }
@@ -114,7 +116,7 @@ Queue<T> filter(const Queue<T> queue, const Condition c)
 *
 */
 template <class T, class Operation>
-void transform(Queue<T> queue, const Operation o){
+void transform(Queue<T>& queue, const Operation o){
     for(T& data : queue){
         o(data);
     }
@@ -291,6 +293,10 @@ T& Queue<T>::Iterator::operator*() const{
         throw InvalidOperation();
     }
 
+    if(m_queue->m_size == 0){
+        throw EmptyQueue();
+    }
+
     Node* tempNode = m_queue->m_firstNode; 
     for(int i=0; i<m_index; i++){
         tempNode = tempNode->m_next;
@@ -300,12 +306,18 @@ T& Queue<T>::Iterator::operator*() const{
 
 template <class T>
 typename Queue<T>::Iterator& Queue<T>::Iterator::operator++(){
+    if(m_queue->m_size <= m_index){
+        throw InvalidOperation();
+    }
     ++m_index;
     return *this;
 }
 
 template <class T>
 typename Queue<T>::Iterator Queue<T>::Iterator::operator++(int){
+    if(m_queue->m_size <= m_index){
+        throw InvalidOperation();
+    }
     Iterator result = *this;
     ++*this;
     return result;
@@ -327,10 +339,13 @@ T* const Queue<T>::Iterator::operator->() const{
         throw InvalidOperation();
     }
 
+    if(m_queue->m_size == 0){
+        throw EmptyQueue();
+    }
+
     Node* tempNode = m_queue->m_firstNode; 
     for(int i=0; i<m_index; i++){
         tempNode = tempNode->m_next;
-        assert(tempNode == nullptr);
     }
     return &(tempNode->m_data);
 }
@@ -345,22 +360,31 @@ const T& Queue<T>::ConstIterator::operator*() const{
         throw InvalidOperation();
     }
 
+    if(m_queue->m_size == 0){
+        throw EmptyQueue();
+    }
+
     Node* tempNode = m_queue->m_firstNode; 
     for(int i=0; i<m_index; i++){
         tempNode = tempNode->m_next;
-        assert(tempNode == nullptr);
     }
     return tempNode->m_data;
 }
 
 template <class T>
 typename Queue<T>::ConstIterator& Queue<T>::ConstIterator::operator++(){
+    if(m_queue->m_size <= m_index){
+        throw InvalidOperation();
+    }
     ++m_index;
     return *this;
 }
 
 template <class T>
 typename Queue<T>::ConstIterator Queue<T>::ConstIterator::operator++(int){
+    if(m_queue->m_size <= m_index){
+        throw InvalidOperation();
+    }
     ConstIterator result = *this;
     ++*this;
     return result;
@@ -382,14 +406,15 @@ const T* const Queue<T>::ConstIterator::operator->() const{
         throw InvalidOperation();
     }
 
+    if(m_queue->m_size == 0){
+        throw EmptyQueue();
+    }
+
     Node* tempNode = m_queue->m_firstNode; 
     for(int i=0; i<m_index; i++){
         tempNode = tempNode->m_next;
-        assert(tempNode == nullptr);
     }
     return &(tempNode->m_data);
 }
-
-
 
 #endif //EX3_Queue_H

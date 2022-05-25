@@ -1,5 +1,6 @@
 #include "Queue.h"
 #include "iostream"
+#include <cassert>
 
 
 #define AGREGATE_TEST_RESULT(res, cond) (res) = ((res) && (cond))
@@ -13,8 +14,6 @@ static void setFortyTwo(int& n)
 {
 	n = 42;
 }
-
-namespace QueueTests {
 
 bool testQueueMethods()
 {
@@ -80,6 +79,7 @@ bool testExceptions()
 	catch (Queue<int>::EmptyQueue& e) {
 		exceptionThrown = true;
 	}
+	assert(exceptionThrown == true);
 	AGREGATE_TEST_RESULT(testResult, exceptionThrown);
 
 	exceptionThrown = false;
@@ -121,4 +121,30 @@ bool testConstQueue()
 	return testResult;
 }
 
+int main(){
+	if(testQueueMethods()){
+		std::cout << "Queue methods test passed" << std::endl;
+	}else{
+		std::cout << "Queue methods test failed" << std::endl;
+	}
+
+	if(testModuleFunctions()){
+		std::cout << "Module functions test passed" << std::endl;
+	}else{
+		std::cout << "Module functions test failed" << std::endl;
+	}
+
+	if(testExceptions()){
+		std::cout << "Exceptions test passed" << std::endl;
+	}else{
+		std::cout << "Exceptions test failed" << std::endl;
+	}
+
+	if(testConstQueue()){
+		std::cout << "Const queue test passed" << std::endl;
+	}else{
+		std::cout << "Const queue test failed" << std::endl;
+	}
+
+	return 0;
 }
