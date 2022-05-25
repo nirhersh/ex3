@@ -83,8 +83,8 @@ bool operator<(HealthPoints hp1, HealthPoints hp2)
     return (hp1.m_currentHP < hp2.m_currentHP);
 }
 
-    std::ostream& operator<<(std::ostream& os, HealthPoints& hp)
-    {
-        os << hp.m_currentHP << "(" << hp.m_maxHP << ")";
-        return os;
-    }
+std::ostream& operator<<(std::ostream& os, const HealthPoints& hp)
+{
+    os << hp.m_currentHP << "(" << hp.m_maxHP << ")";
+    return os;
+}

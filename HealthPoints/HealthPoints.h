@@ -76,7 +76,7 @@ private:
     /*
     * print operator
     */
-    friend std::ostream& operator<<(std::ostream& os, HealthPoints& hp);
+    friend std::ostream& operator<<(std::ostream& os, const HealthPoints& hp);
 };
 
 
