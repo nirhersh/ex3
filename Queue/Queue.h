@@ -62,38 +62,20 @@ public:
 
     /*
     *
-    * a function that filters the queue with the given condition
-    * 
-    * @return a new queue with the filtered items
-    * 
-    */
-    template <class Condition>
-    static Queue<T> filter(const Queue<T> queue, const Condition c);
-
-    /*
-    *
-    * a function that transforms the items of the given queue with the operation given
-    *
-    */
-    template <class Operation>
-    static void transform(Queue<T> queue, const Operation o);
-
-    /*
-    *
     * class of iterators to iterate through the queue
     * 
     */ 
     class Iterator;
 
-    Iterator begin() const;
+    Iterator begin();
     
-    Iterator end() const;
+    Iterator end();
 
     class ConstIterator;
 
-    ConstIterator beginConst() const;
+    ConstIterator begin() const;
 
-    ConstIterator endConst() const;
+    ConstIterator end() const;
 
     class EmptyQueue{};
 
@@ -104,6 +86,39 @@ private:
     int m_size;
     static const int EMPTY = 0;
 };
+
+/*
+*
+* a function that filters the queue with the given condition
+* 
+* @return a new queue with the filtered items
+* 
+*/
+template <class T ,class Condition>
+Queue<T> filter(const Queue<T> queue, const Condition c)
+{
+    Queue<T> result;
+    for (const T& elem : queue)
+    {
+        if (Condition(elem))
+        {
+            result.pushBack(elem);
+        }
+    }
+    return result;
+}
+
+/*
+*
+* a function that transforms the items of the given queue with the operation given
+*
+*/
+template <class T, class Operation>
+void transform(Queue<T> queue, const Operation o){
+    for(T& data : queue){
+        o(data);
+    }
+}
 
 template <class T>
 class Queue<T>::Node{
@@ -129,12 +144,13 @@ public:
 
     Iterator(const Iterator&) = default;
     Iterator& operator=(const Iterator&) = default;
-
+    
     class InvalidOperation{};
 private:
     const Queue<T>* m_queue;
     int m_index;
     Iterator(const Queue<T>* queue, int index);
+    Iterator(ConstIterator constIt);
     friend class Queue<T>;
 };
 
@@ -234,51 +250,28 @@ void Queue<T>::popFront()
 }
 
 template <class T>
-template <class Operation>
-void Queue<T>::transform(Queue<T> queue, const Operation o){
-    for(T& data : queue){
-        o(data);
-    }
-}
-
-template <class T>
 int Queue<T>::size()
 {
     return m_size;
 }
 
 template <class T>
-template <class Condition>
-Queue<T> Queue<T>::filter(const Queue<T> queue, const Condition c)
-{
-    Queue<T> result;
-    for (const T& elem : queue)
-    {
-        if (Condition(elem))
-        {
-            result.pushBack(elem);
-        }
-    }
-    return result;
-}
-
-template <class T>
-typename Queue<T>::Iterator Queue<T>::begin() const{
+typename Queue<T>::Iterator Queue<T>::begin(){
     return Iterator(this, 0);
 }
 
 template <class T>
-typename Queue<T>::Iterator Queue<T>::end() const{
+typename Queue<T>::Iterator Queue<T>::end(){
     return Iterator(this, m_size);
 }
 
 template <class T>
-typename Queue<T>::ConstIterator Queue<T>::beginConst() const{
+typename Queue<T>::ConstIterator Queue<T>::begin() const{
     return ConstIterator(this, 0);
 }
 
 template <class T>
-typename Queue<T>::ConstIterator Queue<T>::endConst() const{
+typename Queue<T>::ConstIterator Queue<T>::end() const{
     return ConstIterator(this, m_size);
 }
 //---------------------Node Implementation---------------------
@@ -288,6 +281,9 @@ Queue<T>::Node::Node(const T data) : m_data(data), m_next(nullptr){}
 //---------------------Iterator Implementation---------------------
 template <class T>
 Queue<T>::Iterator::Iterator(const Queue<T>* queue, int index) : m_queue(queue), m_index(index){}
+
+template <class T>
+Queue<T>::Iterator::Iterator(ConstIterator constIt) : m_queue(constIt.m_queue), m_index(constIt.m_index){}
 
 template <class T>
 T& Queue<T>::Iterator::operator*() const{
