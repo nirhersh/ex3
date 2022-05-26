@@ -50,34 +50,37 @@ private:
     int m_maxHP;
     int m_currentHP;
 
-     /*
+    /*
     * boolean operators
     */
-    friend bool operator==(HealthPoints hp1, HealthPoints hp2);
-    friend bool operator!=(HealthPoints hp1, HealthPoints hp2);
-    friend bool operator>=(HealthPoints hp1, HealthPoints hp2);
-    friend bool operator>(HealthPoints hp1, HealthPoints hp2);
-    friend bool operator<=(HealthPoints hp1, HealthPoints hp2);
-    friend bool operator<(HealthPoints hp1, HealthPoints hp2);
+    friend bool operator>=(HealthPoints healthPoints1, HealthPoints healthPoints2);
 
-     /*
-    *
-    * + operator
-    */
-    friend HealthPoints& operator+(int number, HealthPoints& hp);
-    friend HealthPoints& operator+(HealthPoints& hp, int number);
-
-     /*
-    * - (minus) operator
-    */
-    friend HealthPoints& operator-(int number, HealthPoints& hp);
-    friend HealthPoints& operator-(HealthPoints& hp, int number);
-    
     /*
     * print operator
     */
     friend std::ostream& operator<<(std::ostream& os, const HealthPoints& hp);
 };
+
+    /*
+    * + operator
+    */
+    HealthPoints operator+(int number, const HealthPoints& healthPoints);
+    HealthPoints operator+(const HealthPoints& healthPoints, int number);
+
+     /*
+    * - (minus) operator
+    */
+    HealthPoints operator-(const HealthPoints& healthPoints, int number);
+
+
+     /*
+    * boolean operators
+    */
+    bool operator>(HealthPoints healthPoints1, HealthPoints healthPoints2);
+    bool operator<=(HealthPoints healthPoints1, HealthPoints healthPoints2);
+    bool operator<(HealthPoints healthPoints1, HealthPoints healthPoints2);
+    bool operator==(HealthPoints healthPoints1, HealthPoints healthPoints2);
+    bool operator!=(HealthPoints healthPoints1, HealthPoints healthPoints2);
 
 
 

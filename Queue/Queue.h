@@ -60,7 +60,7 @@ public:
     * returns the size of the queue
     * 
     */ 
-    int size();
+    int size() const;
 
     /*
     *
@@ -252,7 +252,7 @@ void Queue<T>::popFront()
 }
 
 template <class T>
-int Queue<T>::size()
+int Queue<T>::size() const
 {
     return m_size;
 }
@@ -416,5 +416,6 @@ const T* const Queue<T>::ConstIterator::operator->() const{
     }
     return &(tempNode->m_data);
 }
+
 
 #endif //EX3_Queue_H
