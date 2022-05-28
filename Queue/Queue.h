@@ -1,3 +1,8 @@
+//
+// composed by code artists nir herscovici & roei bloch
+// all rights reserved to niroei industries ba'am
+//
+
 #ifndef EX3_Queue_H
 #define EX3_Queue_H
 
@@ -47,7 +52,14 @@ public:
     * returns the item at the start of the queue
     * 
     */ 
-    T& front() const;
+    T& front();
+
+    /*
+    *
+    * returns the item at the start of the queue
+    * 
+    */ 
+    const T& front() const;
 
     /*
     *
@@ -70,18 +82,53 @@ public:
     */ 
     class Iterator;
 
+    /*
+    *
+    * function that returns an iterator to the start of the queue
+    * 
+    */ 
     Iterator begin();
     
+    /*
+    *
+    * function that returns an iterator to the end of the queue
+    * 
+    */
     Iterator end();
 
+    /*
+    *
+    * class of iterators to a const queue
+    * 
+    */
     class ConstIterator;
 
+    /*
+    *
+    * function that returns a const iterator to the start of the queue
+    * 
+    */
     ConstIterator begin() const;
 
+    /*
+    *
+    * function that returns a const iterator to the end of the queue
+    * 
+    */
     ConstIterator end() const;
 
+    /*
+    *
+    * an exception that is thrown when trying to make invalid operation on an empty queue
+    * 
+    */
     class EmptyQueue{};
 
+    /*
+    *
+    * a class of nodes that hold the objects in the queue
+    * 
+    */
     class Node;
 
 private:
@@ -245,7 +292,15 @@ void Queue<T>::pushBack(const T newItem){
 
 
 template <class T>
-T& Queue<T>::front() const{
+T& Queue<T>::front(){
+    if(m_size == 0){
+        throw EmptyQueue();
+    }
+    return m_firstNode->m_data;
+}
+
+template <class T>
+const T& Queue<T>::front() const{
     if(m_size == 0){
         throw EmptyQueue();
     }
@@ -255,7 +310,7 @@ T& Queue<T>::front() const{
 template <class T>
 void Queue<T>::popFront()
 {
-    if(m_size == 0){
+    if(m_size == EMPTY){
         throw EmptyQueue();
     }
     Node* tempNode = m_firstNode->m_next;
@@ -272,7 +327,7 @@ int Queue<T>::size() const
 
 template <class T>
 typename Queue<T>::Iterator Queue<T>::begin(){
-    return Iterator(this, 0);
+    return Iterator(this, EMPTY);
 }
 
 template <class T>
@@ -282,7 +337,7 @@ typename Queue<T>::Iterator Queue<T>::end(){
 
 template <class T>
 typename Queue<T>::ConstIterator Queue<T>::begin() const{
-    return ConstIterator(this, 0);
+    return ConstIterator(this, EMPTY);
 }
 
 template <class T>
@@ -302,11 +357,11 @@ Queue<T>::Iterator::Iterator(ConstIterator constIt) : m_queue(constIt.m_queue), 
 
 template <class T>
 T& Queue<T>::Iterator::operator*() const{
-    if(m_index < 0 || m_index >= m_queue->m_size){
+    if(m_index < EMPTY || m_index >= m_queue->m_size){
         throw InvalidOperation();
     }
 
-    if(m_queue->m_size == 0){
+    if(m_queue->m_size == EMPTY){
         throw EmptyQueue();
     }
 
@@ -348,11 +403,11 @@ bool Queue<T>::Iterator::operator!=(const Iterator& it) const{
 
 template <class T>
 T* const Queue<T>::Iterator::operator->() const{
-    if(m_index < 0 || m_index >= m_queue->m_size){
+    if(m_index < EMPTY || m_index >= m_queue->m_size){
         throw InvalidOperation();
     }
 
-    if(m_queue->m_size == 0){
+    if(m_queue->m_size == EMPTY){
         throw EmptyQueue();
     }
 
@@ -369,11 +424,11 @@ Queue<T>::ConstIterator::ConstIterator(const Queue<T>* queue, int index) : m_que
 
 template <class T>
 const T& Queue<T>::ConstIterator::operator*() const{
-    if(m_index < 0 || m_index >= m_queue->m_size){
+    if(m_index < EMPTY || m_index >= m_queue->m_size){
         throw InvalidOperation();
     }
 
-    if(m_queue->m_size == 0){
+    if(m_queue->m_size == EMPTY){
         throw EmptyQueue();
     }
 
@@ -415,11 +470,11 @@ bool Queue<T>::ConstIterator::operator!=(const ConstIterator& it) const{
 
 template <class T>
 const T* const Queue<T>::ConstIterator::operator->() const{
-    if(m_index < 0 || m_index >= m_queue->m_size){
+    if(m_index < EMPTY || m_index >= m_queue->m_size){
         throw InvalidOperation();
     }
 
-    if(m_queue->m_size == 0){
+    if(m_queue->m_size == EMPTY){
         throw EmptyQueue();
     }
 
