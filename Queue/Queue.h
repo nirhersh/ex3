@@ -2,6 +2,7 @@
 #define EX3_Queue_H
 
 #include <iostream>
+#include <cassert>
 
 template <class T>
 class Queue{
@@ -46,7 +47,7 @@ public:
     * returns the item at the start of the queue
     * 
     */ 
-    T& front();
+    T& front() const;
 
     /*
     *
@@ -189,13 +190,24 @@ Queue<T>::~Queue(){
     for(int i=0; i < size; i++){
          this->popFront();
     }
+    assert(m_firstNode == nullptr);
 }
 
 template <class T>
 Queue<T>::Queue(const Queue<T>& other) : m_firstNode(nullptr), m_size(EMPTY){
     for(const T& elem : other){
-        this->pushBack(elem);
+        try{
+            this->pushBack(elem);
+        }catch(std::bad_alloc& e){
+            int size = m_size;
+            for(int i=0; i < size; i++){
+                this->popFront();
+                throw e;
+            }
+        }
     }
+    assert(m_size == other.m_size);
+    
 }
 
 template <class T>
@@ -211,6 +223,7 @@ Queue<T>& Queue<T>::operator=(const Queue<T>& other){
     for(const T& elem : other){
         this->pushBack(elem);
     }
+    assert(m_size == other.m_size);
     return *this;
     
 }
@@ -232,7 +245,7 @@ void Queue<T>::pushBack(const T newItem){
 
 
 template <class T>
-T& Queue<T>::front(){
+T& Queue<T>::front() const{
     if(m_size == 0){
         throw EmptyQueue();
     }
