@@ -263,14 +263,15 @@ Queue<T>& Queue<T>::operator=(const Queue<T>& other){
     {
         return *this;
     }
+    Queue<T> temp = other;
     int size = m_size;
     for(int i=0; i<size; i++){
         this->popFront();
     }
-    for(const T& elem : other){
-        this->pushBack(elem);
-    }
-    assert(m_size == other.m_size);
+    m_firstNode=temp.m_firstNode;
+    temp.m_firstNode = nullptr;
+    m_size = other.m_size;
+    assert(m_size == temp.m_size);
     return *this;
     
 }
@@ -288,35 +289,6 @@ void Queue<T>::pushBack(const T newItem){
         tempNode->m_next = newNode;
     }
     m_size++;
-}
-
-
-template <class T>
-T& Queue<T>::front(){
-    if(m_size == 0){
-        throw EmptyQueue();
-    }
-    return m_firstNode->m_data;
-}
-
-template <class T>
-const T& Queue<T>::front() const{
-    if(m_size == 0){
-        throw EmptyQueue();
-    }
-    return m_firstNode->m_data;
-}
-
-template <class T>
-void Queue<T>::popFront()
-{
-    if(m_size == EMPTY){
-        throw EmptyQueue();
-    }
-    Node* tempNode = m_firstNode->m_next;
-    delete m_firstNode;
-    m_firstNode = tempNode;
-    m_size--;
 }
 
 template <class T>
